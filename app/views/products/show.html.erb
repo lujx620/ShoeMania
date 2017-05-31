@@ -1,0 +1,39 @@
+
+<a href='/users/show/<%=current_user.id%>'>My Dashboard</a>
+
+<h4>Greetings, <%=current_user.first_name%>!</h4>
+
+
+<h4> All Products </h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th> Product</th>
+        <th> Seller</th>
+        <th> Date Posted </th>
+        <th> Amount</th>
+        <th> Action </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |shoe| %>
+        <% unless shoe.user == current_user %>
+          <% unless Sell.all.where('product_id=?', shoe.id).length >0 %>
+      <tr>
+        <td><%= shoe.name %></td>
+        <td> <%=shoe.user.first_name %> <%=shoe.user.last_name %></td>
+        <td> <%=shoe.created_at.strftime('%b %d, %Y')%></td>
+        <td> <%=number_to_currency(shoe.price)%></td>
+        <td>
+          <form action='/products/buy/<%=shoe.id%>' method='post'>
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type='submit' value='Buy'>
+          </form>
+        </td>
+      </tr>
+          <% end %>
+        <%end%>
+      <% end %>
+    </tbody>
+  </table>

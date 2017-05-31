@@ -1,0 +1,92 @@
+
+<a href='/shoes'> Go to All Products</a>
+
+
+<h4> Hi, <%=current_user.first_name%>!</h4>
+<p> Sell Product</p>
+
+<form action='/products/create' method='post'>
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+  <p>Product Name: <input type='text' name='name'></p>
+  <p>Amount: <input type='text' name='price' placeholder='$00.00'></p>
+  <input type='submit' value='Sell'>
+</form>
+
+
+<h4> Your products that are not yet sold:</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Date Posted</th>
+      <th>Amount</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @unsold.each do |item| %>
+
+        <tr>
+          <td><%=item.name%></td>
+          <td><%=item.created_at.strftime('%b %d, %Y')%></td>
+          <td><%=number_to_currency(item.price)%></td>
+          <td><a href='/products/delete/<%=item.id%>' data-method='delete'> Remove Item</a></td>
+        </tr>
+
+    <%end%>
+  </tbody>
+</table>
+
+
+<h4>Sales</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Date Posted</th>
+      <th>Buyer</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sold_items.each do |item| %>
+      <% if item.product.user == current_user %>
+          <% @total_s += item.product.price %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%=item.product.created_at.strftime('%b %d, %Y')%></td>
+          <td><%= item.user.first_name%></td>
+          <td><%= number_to_currency(item.product.price)%></td>
+        </tr>
+      <%end%>
+    <% end %>
+  </tbody>
+</table>
+<h4>Total:</h4> <p><%= number_to_currency(@total_s)%></p>
+
+
+<h4>Purchased</h4>
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Date Bought</th>
+      <th>Seller</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <% @purchased.each do |item| %>
+    <% @total += item.product.price %>
+        <tr>
+          <td><%=item.product.name%></td>
+          <td><%=item.product.created_at.strftime('%b %d, %Y')%></td>
+          <td> <%=item.product.user.first_name%> <%=item.product.user.last_name%></td>
+          <td><%=number_to_currency(item.product.price)%></td>
+        </tr>
+
+    <%end%>
+
+  </table>
+<h4>Total: </h4><p> <%=number_to_currency(@total) %></p>
