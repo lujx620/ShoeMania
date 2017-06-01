@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @my_products = Product.where('user_id=?', current_user.id)
     @unsold = []
     @total = 0
-    @total_s =0
+    @total_s = 0
     @my_products.each do |shoe|
       if Buyer.all.where('product_id=?', shoe.id).length == 0
         @unsold << shoe

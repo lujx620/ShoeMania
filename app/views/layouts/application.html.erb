@@ -7,6 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div align='right'>
   <% if current_user %>
       <form action="/sessions/logout" method="post">
         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -14,6 +15,7 @@
         <input type="submit" value="Log Out">
       </form>
     <% end %>
+  </div>
 
   <% if flash[:errors] %>
     <% flash[:errors].each do |err| %>

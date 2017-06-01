@@ -1,5 +1,4 @@
-
-<a href='/shoes'> Go to All Products</a>
+<div align='right'><a href='/shoes'> Go to All Products</a></div>
 
 
 <h4> Hi, <%=current_user.first_name%>!</h4>
@@ -43,7 +42,7 @@
   <thead>
     <tr>
       <th>Product</th>
-      <th>Date Posted</th>
+      <th>Date Sold</th>
       <th>Buyer</th>
       <th>Amount</th>
     </tr>
@@ -78,15 +77,15 @@
   <tbody>
 
     <% @purchased.each do |item| %>
-    <% @total += item.product.price %>
+      <% @total += item.product.price %>
         <tr>
           <td><%=item.product.name%></td>
           <td><%=item.product.created_at.strftime('%b %d, %Y')%></td>
-          <td> <%=item.product.user.first_name%> <%=item.product.user.last_name%></td>
+          <td> <%=item.product.user.first_name%> </td>
           <td><%=number_to_currency(item.product.price)%></td>
         </tr>
 
-    <%end%>
+        <%end%>
 
   </table>
-<h4>Total: </h4><p> <%=number_to_currency(@total) %></p>
+<h4>Total: </h4><p><%=number_to_currency(@total) %></p>
